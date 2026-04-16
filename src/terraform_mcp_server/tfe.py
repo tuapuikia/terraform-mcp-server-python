@@ -1,5 +1,6 @@
 import httpx
 from typing import Optional, Dict, Any, List
+from urllib.parse import quote
 from .config import settings
 from loguru import logger
 
@@ -35,22 +36,22 @@ class TFEClient:
         return await self._request("GET", "/organizations")
 
     async def list_workspaces(self, org_name: str, **kwargs) -> Dict[str, Any]:
-        return await self._request("GET", f"/organizations/{org_name}/workspaces", params=kwargs)
+        return await self._request("GET", f"/organizations/{quote(org_name)}/workspaces", params=kwargs)
 
     async def get_workspace(self, org_name: str, workspace_name: str) -> Dict[str, Any]:
-        return await self._request("GET", f"/organizations/{org_name}/workspaces/{workspace_name}")
+        return await self._request("GET", f"/organizations/{quote(org_name)}/workspaces/{quote(workspace_name)}")
 
     async def create_workspace(self, org_name: str, data: Dict[str, Any]) -> Dict[str, Any]:
-        return await self._request("POST", f"/organizations/{org_name}/workspaces", json={"data": data})
+        return await self._request("POST", f"/organizations/{quote(org_name)}/workspaces", json={"data": data})
 
     async def delete_workspace(self, workspace_id: str) -> Dict[str, Any]:
-        return await self._request("DELETE", f"/workspaces/{workspace_id}")
+        return await self._request("DELETE", f"/workspaces/{quote(workspace_id)}")
 
     async def list_runs(self, workspace_id: str, **kwargs) -> Dict[str, Any]:
-        return await self._request("GET", f"/workspaces/{workspace_id}/runs", params=kwargs)
+        return await self._request("GET", f"/workspaces/{quote(workspace_id)}/runs", params=kwargs)
 
     async def get_run(self, run_id: str) -> Dict[str, Any]:
-        return await self._request("GET", f"/runs/{run_id}")
+        return await self._request("GET", f"/runs/{quote(run_id)}")
 
     async def create_run(self, data: Dict[str, Any]) -> Dict[str, Any]:
         return await self._request("POST", "/runs", json={"data": data})
