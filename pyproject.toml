@@ -1,0 +1,23 @@
+[project]
+name = "terraform-mcp-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.3.2",
+    "httpx>=0.28.1",
+    "loguru>=0.7.3",
+    "mcp>=1.27.0",
+    "pydantic-settings>=2.13.1",
+    "sse-starlette>=3.3.4",
+    "starlette>=1.0.0",
+    "uvicorn>=0.44.0",
+]
+
+[project.scripts]
+terraform-mcp-server = "terraform_mcp_server.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
