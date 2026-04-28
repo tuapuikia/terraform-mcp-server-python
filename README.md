@@ -10,18 +10,18 @@ A Python port of the Terraform MCP Server, providing integration with the Terraf
 
 ## Installation
 
-This project is designed to be run with `uv` or `uvx`.
+This project is designed to be run with `uv` or `uvx`. By default, it runs using the **Stdio** transport.
 
 ### Using uvx
 
 ```bash
-uvx --from . terraform-mcp-server stdio
+uvx --from . terraform-mcp-server
 ```
 
 ### Using uv run
 
 ```bash
-uv run terraform-mcp-server stdio
+uv run terraform-mcp-server
 ```
 
 ## Configuration

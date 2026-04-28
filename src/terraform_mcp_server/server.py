@@ -32,9 +32,11 @@ def main():
     from starlette.routing import Route, Mount
     from mcp.server.sse import SseServerTransport
 
-    @click.group()
-    def cli():
-        pass
+    @click.group(invoke_without_command=True)
+    @click.pass_context
+    def cli(ctx):
+        if ctx.invoked_subcommand is None:
+            ctx.invoke(stdio)
 
     @cli.command()
     @click.option("--log-level", default=settings.log_level, help="Log level")
@@ -51,17 +53,17 @@ def main():
         """Run the server using SSE transport."""
         logger.info(f"Starting SSE server on {host}:{port}")
         
-        # FastMCP's run(transport="sse") handles the Starlette app creation
-        mcp.run(transport="sse", host=host, port=port)
+        import uvicorn
+        uvicorn.run(mcp.sse_app(), host=host, port=port)
 
-    # Alias for backward compatibility or matching Go implementation
     @cli.command(name="streamable-http")
     @click.option("--port", default=settings.transport_port, help="Port to listen on")
     @click.option("--host", default=settings.transport_host, help="Host to bind to")
-    @click.pass_context
-    def streamable_http(ctx, port, host):
+    def streamable_http(port, host):
         """Start StreamableHTTP server."""
-        ctx.forward(sse)
+        logger.info(f"Starting StreamableHTTP server on {host}:{port}")
+        import uvicorn
+        uvicorn.run(mcp.streamable_http_app(), host=host, port=port)
 
     cli()
 
